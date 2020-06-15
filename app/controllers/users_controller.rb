@@ -38,7 +38,19 @@ class UsersController < ApplicationController
 
   def create
     auth_hash = request.env["omniauth.auth"]
-    raise
+    user = User.find_by(uid: auth_hash[:uid], provider: "github")
+    if user
+      flash[:success] = "Logged in as returning user #{user.username}"
+    else
+      user = User.new(uid: auth_hash[:uid], provider: "github", username: auth_hash["extra"]["raw_info"]["login"])
+      if user.save
+        session[:user_id] = user.id
+        flash[:success] = "Logged in as new user #{user.username}"
+      else
+        flash[:error] = "Unable to log in"
+      end
+      redirect_to root_path
+    end
   end
 
   def logout
