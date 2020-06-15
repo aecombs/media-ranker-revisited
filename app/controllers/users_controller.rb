@@ -42,7 +42,7 @@ class UsersController < ApplicationController
     if user
       flash[:success] = "Logged in as returning user #{user.username}"
     else
-      user = User.new(uid: auth_hash[:uid], provider: "github", username: auth_hash["extra"]["raw_info"]["login"], avatar: auth_hash["info"]["image"], email: auth_hash[""])
+      user = User.built_from_github(auth_hash)
       if user.save
         session[:user_id] = user.id
         flash[:success] = "Logged in as new user #{user.username}"
