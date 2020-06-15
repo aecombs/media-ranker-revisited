@@ -14,8 +14,8 @@ class User < ApplicationRecord
     user.provider = auth_hash["provider"]
     user.username = auth_hash["extra"]["raw_info"]["login"]
     user.avatar = auth_hash["info"]["image"]
-    user.email = auth_hash["info"]["email"])
-    
+    user.email = auth_hash["info"]["email"]
+
     return user
   end
 end
